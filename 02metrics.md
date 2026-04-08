@@ -57,3 +57,63 @@ In a machine learning pipeline attempting to detect stealthy zero-day exploits, 
 
 **When to use**  
 It is the foundational loss function for the AdaBoost algorithm. However, you must use it with extreme caution: because it punishes errors so violently, it is highly vulnerable to noisy data and outliers. If you have mislabeled data in your training set, exponential loss will derail the model by trying to force it to learn the noise.
+
+
+# Performance Metrics in Machine Learning
+
+### 1. Accuracy
+**Description:** The most intuitive performance measure, representing simply the ratio of correctly predicted observations to the total number of observations.
+
+**Content:**
+Accuracy answers a very simple question: *"Out of everything the model guessed, what percentage did it get exactly right?"*
+
+$$\text{Accuracy} = \frac{\text{True Positives} + \text{True Negatives}}{\text{Total Observations}}$$
+
+*   **Example:** If you build a model to classify 100 emails as spam or not spam, and it correctly categorizes 90 of them, your accuracy is 90%.
+*   **When to use:** Use Accuracy only when your dataset is **perfectly balanced** (e.g., 50% spam, 50% normal emails) and the costs of false positives and false negatives are roughly the same. 
+*   **Warning:** Never use it for imbalanced data. As discussed in Part 4, if 99% of network traffic is benign and 1% is an attack, a model that simply guesses "benign" every time is 99% accurate but completely useless as a security tool.
+
+---
+
+### 2. R (Pearson Correlation Coefficient)
+**Description:** A statistical measurement ranging from -1 to 1 that indicates the strength and direction of a linear relationship between two numerical variables.
+
+**Content:**
+The "R" value tells you how closely two features move together.
+*   **$r = 1$:** Perfect positive correlation (as X goes up, Y goes up identically).
+*   **$r = -1$:** Perfect negative correlation (as X goes up, Y goes down identically).
+*   **$r = 0$:** Absolutely no linear relationship.
+
+$$r = \frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2 \sum(y_i-\bar{y})^2}}$$
+
+*   **Example:** In a dataset of houses, "Square Footage" and "Price" might have a strong positive correlation of $r = +0.85$. Conversely, "Distance from City Center" and "Price" might have a negative correlation of $r = -0.65$.
+*   **When to use:** Use R heavily during **Exploratory Data Analysis (EDA)** and feature selection. If two features have a correlation of $r = 0.98$ with each other (highly collinear), they are essentially giving the model the exact same information, and you should probably drop one to make the model simpler and faster.
+
+---
+
+### 3. R-Squared ($R^2$ / Coefficient of Determination)
+**Description:** A statistical measure representing the proportion of the variance in the dependent variable (target) that is explained by the independent variables (features) in a regression model.
+
+**Content:**
+While R measures the relationship between two specific variables, R-Squared measures how well your **entire model** fits the data. It ranges from 0 to 1 (or 0% to 100%). It calculates the difference between the errors of your complex regression model and the errors of a baseline model that just guesses the average every time.
+
+$$R^2 = 1 - \frac{\text{Sum of Squared Residuals (Model Errors)}}{\text{Total Sum of Squares (Baseline Errors)}}$$
+
+*   **Example:** You build a linear regression model to predict a student's final exam score based on "Hours Studied," "Classes Attended," and "Previous Test Scores." If your model's $R^2$ is 0.82, it means that 82% of the variation in the final exam scores can be explained by those three inputs. The remaining 18% is due to unmeasured factors (like sleep or random noise).
+*   **When to use:** R-squared is the primary, go-to metric for evaluating the overall **goodness-of-fit for Regression models** (models predicting continuous numbers).
+
+---
+
+### 📝 Review Note: Metrics & Model Fit
+
+**Core Learning:**
+*   **Accuracy:** A classification metric.
+*   **R:** A feature relationship metric (raw data).
+*   **R-Squared:** A regression evaluation metric (model fit).
+
+**Points of Confusion to Review:**
+*   I must be careful not to confuse $R$ and $R^2$ in an interview.
+*   $R$ is about the **raw data** (how two columns relate to each other).
+*   $R^2$ is about the **model** (how well the algorithm's predictions fit the actual target).
+
+> **Remember the trap:** Interviewers will ask *"Is high Accuracy always good?"* I need to immediately bring up the **imbalanced dataset scenario** where Accuracy is completely misleading.
